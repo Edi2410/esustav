@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -40,16 +41,18 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     'rest_framework.authtoken',
-    "estudenti",
-    "eizbori",
-    "drf_spectacular",
     'django.contrib.sites',  # must
     'allauth',  # must
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',
+    "estudenti",
+    "eizbori",
+    "drf_spectacular",
 ]
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -62,6 +65,12 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
@@ -80,6 +89,18 @@ SWAGGER_SETTINGS = {
     },
 }
 
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        }
+    }
+}
+
 ROOT_URLCONF = "settings.urls"
 
 TEMPLATES = [
@@ -93,10 +114,14 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+
+
+
 
 WSGI_APPLICATION = "settings.wsgi.application"
 
@@ -154,31 +179,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 
-    # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-]
+)
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
-SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
-
-# Additional configuration settings
-SOCIALACCOUNT_QUERY_EMAIL = True
-ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_REQUIRED = True
+LOGOUT_REDIRECT_URL = '/'

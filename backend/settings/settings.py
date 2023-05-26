@@ -40,21 +40,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_filters",
     "rest_framework",
-    'rest_framework.authtoken',
+    "corsheaders",
     'django.contrib.sites',  # must
-    'allauth',  # must
-    'allauth.account',  # must
-    'allauth.socialaccount',  # must
-    'allauth.socialaccount.providers.google',
     "estudenti",
     "eizbori",
     "drf_spectacular",
+    "authentication",
 ]
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
 
-
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -63,16 +60,21 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        "rest_framework.authentication.BasicAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-    ],
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'authentication.authentication.EmailAuthBackend',
+        "django.contrib.auth.backends.ModelBackend",
+    ),
 }
+
+AUTHENTICATION_BACKENDS = (
+    'authentication.authentication.EmailAuthBackend',
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'eSustav',
@@ -89,17 +91,6 @@ SWAGGER_SETTINGS = {
     },
 }
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": [
-            "profile",
-            "email",
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "online",
-        }
-    }
-}
 
 ROOT_URLCONF = "settings.urls"
 
@@ -119,8 +110,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
 
 
 WSGI_APPLICATION = "settings.wsgi.application"
@@ -178,12 +167,3 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'

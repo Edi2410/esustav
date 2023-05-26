@@ -1,43 +1,35 @@
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialLoginView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import RedirectView
+
+
+from rest_framework.decorators import permission_classes, action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.permissions import (
-    IsAuthenticated,
+from rest_framework_simplejwt.authentication import (
+    JWTAuthentication,
 )
+
+
 from rest_framework import viewsets
-from .serializers import UserSerializer
-from .models import User
+from .serializers import UserPositionSerializer, UserSerializer
+from .models import User, UsersPositions
 from rest_framework.response import Response
-# Create your views here.
+from rest_framework.decorators import permission_classes
 
 
+@permission_classes([IsAuthenticated])
 class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def list(self, request):
-        queryset = User.objects.all()
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(
+        methods=["GET"],
+        detail=False,
+        url_path="auth",
+    )
+    def user_data(self, request):
+        user_position = UsersPositions.objects.get(user=self.request.user)
+        user_position_serializer = UserPositionSerializer(user_position)
 
-
-class GoogleLoginView(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
-    callback_url = "http://localhost:3000"
-    client_class = OAuth2Client
-
-
-class UserRedirectView(LoginRequiredMixin, RedirectView):
-    """
-    This view is needed by the dj-rest-auth-library in order to work the google login. It's a bug.
-    """
-    permanent = False
-
-    def get_redirect_url(self):
-        return "redirect-url"
+        return_data = {
+            "user_data": user_position_serializer.data,
+        }
+        return Response(return_data, status=status.HTTP_200_OK)

@@ -3,11 +3,7 @@
 from rest_framework.decorators import permission_classes, action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from rest_framework_simplejwt.authentication import (
-    JWTAuthentication,
-)
-
-
+from django.middleware.csrf import get_token
 from rest_framework import viewsets
 from .serializers import UserPositionSerializer, UserSerializer
 from .models import User, UsersPositions
@@ -32,6 +28,7 @@ class UserView(viewsets.GenericViewSet):
 
             return_data = {
                 "user_data": user_position_serializer.data,
+                "csrf_token": get_token(request),
             }
             return Response(return_data, status=status.HTTP_200_OK)
         except Exception as e:

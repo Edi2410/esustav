@@ -9,7 +9,9 @@ class Candidate(models.Model):
     team = models.ForeignKey(Teams, on_delete=models.DO_NOTHING, null=True)
     cv = models.TextField(blank=True, null=True)
     plan_rada = models.TextField(blank=True, null=True)
-
+    aktivnosti = models.TextField(blank=True, null=True)
+    deleted = models.BooleanField(default=False)
+    
     def __str__(self) -> str:
         return f"{self.user.email} - {self.role.name} - {self.team.name}"
 

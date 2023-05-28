@@ -24,9 +24,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-gs@fakyxppgvk$#q6#wd%@ckb%=$@xchsv2^p(1hll)l(q$ynm"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['esustav.estudent.hr', 'localhost', '127.0.0.1']
+
+CORS_ALLOWED_ORIGINS = [
+    "https://esustav.estudent.hr",
+    "http://localhost:8700",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://esustav.estudent.hr",
+    "http://localhost:8700",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 
 SITE_ID = 1

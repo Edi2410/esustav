@@ -22,9 +22,9 @@ class CandidateView(viewsets.GenericViewSet):
         role_name_list = ["Tajnik/ca", "Predsjednik/ca", "Potpredsjednik/ca"]
 
         queryset = Candidate.objects.filter(
-            Q(team=team) |
-            Q(role__name__in=role_name_list)
-        )
+            (Q(team=team) |
+             Q(role__name__in=role_name_list)) & Q(deleted=False) 
+        ).exclude(user=self.request.user)
 
         serializer = CandidateSerializers(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -38,7 +38,8 @@ class VotesView(viewsets.GenericViewSet):
     def list(self, request):
         serializer = IDTeamSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        queryset = Votes.objects.filter(team=serializer.validated_data['team'])
+        queryset = Votes.objects.filter(
+            team=serializer.validated_data['team'], deleted=False)
         serializer = VotesSerializers(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -65,7 +66,8 @@ class VotesView(viewsets.GenericViewSet):
     @action(methods=["GET"], detail=False, url_path="isvoted")
     def votes_data(self, request):
         try:
-            queryset = Votes.objects.filter(user=self.request.user)
+            queryset = Votes.objects.filter(
+                user=self.request.user, kandidatura__deleted=False)
 
             if not queryset:
                 return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -81,7 +83,7 @@ class VotesView(viewsets.GenericViewSet):
         try:
             return_data = []
 
-            kandidature = Candidate.objects.all()
+            kandidature = Candidate.objects.filter(deleted=False)
 
             for kandidatura in kandidature:
                 return_data.append({

@@ -5,6 +5,7 @@ export type UserData = {
   team: Team;
   virtual_team: VirtualTeam;
   role: Role;
+  csrf_token: string;
 };
 
 export type User = {
@@ -25,4 +26,3 @@ export type User = {
   groups: [];
   photo: string;
 };
-

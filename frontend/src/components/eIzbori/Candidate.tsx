@@ -42,6 +42,14 @@ export const Candidate = ({ candidate }: Props) => {
           >
             Plan Rada
           </Button>
+          <Button
+            href={candidate?.aktivnosti}
+            target="_blank"
+            type="primary"
+            className="candidateDetailsButton"
+          >
+            Aktivnosti
+          </Button>
         </div>
       </Card>
     </>

@@ -42,7 +42,6 @@ export const VotesForm = ({ candidateData, setIsModalOpen }: Props) => {
   }, [candidateData, NumberOfVotesAvailable]);
 
   const onFinish = (values: any) => {
-    console.log("Success:", values);
     candidateData.forEach((candidate: CandidateType) => {
       saveVotes.mutate({
         kandidatura: candidate.id,
@@ -75,7 +74,6 @@ export const VotesForm = ({ candidateData, setIsModalOpen }: Props) => {
             >
               <Checkbox
                 onChange={(e) => {
-                  console.log(e);
                   return candidate.role.name === "Voditelj/ica" ||
                     candidate.role.name === "Koordinator/ica"
                     ? setBrojGlasovaZaVoditelje(

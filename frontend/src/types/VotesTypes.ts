@@ -7,6 +7,7 @@ export type CandidateType = {
   role: Role;
   team: Team;
   user: User;
+  aktivnosti:string;
 };
 
 export type VotesType = {

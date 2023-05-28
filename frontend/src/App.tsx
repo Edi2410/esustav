@@ -7,7 +7,6 @@ import { MainLayout } from "./layouts/MainLayout";
 
 function App() {
   const { user } = useUserContext();
-  console.log(user);
   return (
     <BrowserRouter>
       <div className="App">{user ? <MainLayout /> : <LoginPage />}</div>

@@ -16,7 +16,7 @@ from rest_framework.decorators import permission_classes
 
 
 @permission_classes([IsAuthenticated])
-class UserView(viewsets.ModelViewSet):
+class UserView(viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -26,10 +26,14 @@ class UserView(viewsets.ModelViewSet):
         url_path="auth",
     )
     def user_data(self, request):
-        user_position = UsersPositions.objects.get(user=self.request.user)
-        user_position_serializer = UserPositionSerializer(user_position)
+        try:
+            user_position = UsersPositions.objects.get(user=self.request.user)
+            user_position_serializer = UserPositionSerializer(user_position)
 
-        return_data = {
-            "user_data": user_position_serializer.data,
-        }
-        return Response(return_data, status=status.HTTP_200_OK)
+            return_data = {
+                "user_data": user_position_serializer.data,
+            }
+            return Response(return_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

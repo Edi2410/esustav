@@ -29,4 +29,4 @@ class Votes(models.Model):
     is_voted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.user.name} - {self.kandidatura.user.name} - {self.is_voted}"
+        return f"{self.user.email} - {self.kandidatura.user.email} - {self.is_voted}"

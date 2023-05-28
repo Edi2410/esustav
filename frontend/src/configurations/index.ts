@@ -1,3 +1,5 @@
 import { routes } from "./routes";
 
-export { routes };
+import {VotesColumns} from "./eIzbori"
+
+export { routes, VotesColumns };

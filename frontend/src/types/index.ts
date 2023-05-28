@@ -1,8 +1,15 @@
-import { UserData, CandidateType, User } from "./UserTypes";
+import { UserData, User } from "./UserTypes";
 
-import { Team, TeamGroups, VirtualTeam } from "./TeamTypes";
+import {
+  Team,
+  TeamGroups,
+  VirtualTeam,
+  NumberOfVotesPerUserType,
+} from "./TeamTypes";
 
 import { Role, RoleGroup } from "./RoleTypes";
+
+import { CandidateType, VotesType, VotesResultsType } from "./VotesTypes";
 
 export {
   UserData,
@@ -13,4 +20,7 @@ export {
   Role,
   RoleGroup,
   CandidateType,
+  NumberOfVotesPerUserType,
+  VotesType,
+  VotesResultsType,
 };

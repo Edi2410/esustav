@@ -1,19 +1,20 @@
 import React from "react";
 import { CandidateType } from "types";
-import { Card, Image } from "antd";
+import { Card, Image, Button } from "antd";
 interface Props {
   candidate: CandidateType;
 }
 
 export const Candidate = ({ candidate }: Props) => {
-  console.log(candidate);
   return (
     <>
       <Card
-        style={{ width: "80%", height: "100%", margin: "auto"}}
+        style={{ width: "90%", height: "100%", margin: "auto" }}
         title={
           candidate?.role?.name +
-          " " +
+          " (" +
+          candidate?.team.short_name +
+          ") " +
           candidate?.user.first_name +
           " " +
           candidate?.user.last_name
@@ -24,6 +25,24 @@ export const Candidate = ({ candidate }: Props) => {
           src={candidate?.user?.photo}
           preview={false}
         />
+        <div className="candidateDetails">
+          <Button
+            href={candidate?.cv}
+            target="_blank"
+            type="primary"
+            className="candidateDetailsButton"
+          >
+            Životopis
+          </Button>
+          <Button
+            href={candidate?.plan_rada}
+            target="_blank"
+            type="primary"
+            className="candidateDetailsButton"
+          >
+            Plan Rada
+          </Button>
+        </div>
       </Card>
     </>
   );

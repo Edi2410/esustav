@@ -26,3 +26,9 @@ export type VirtualTeam = {
   description: string;
   TeamGroups: TeamGroups;
 };  
+
+export type NumberOfVotesPerUserType = {
+  id: number;
+  number_of_votes: number;
+  team: number;
+};

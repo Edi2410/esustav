@@ -26,10 +26,3 @@ export type User = {
   photo: string;
 };
 
-export type CandidateType = {
-  cv: string;
-  plan_rada: string;
-  role: Role;
-  team: Team;
-  user: User;
-};

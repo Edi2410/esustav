@@ -19,7 +19,7 @@ export const NavBar: React.FC = () => {
 
   return (
     <Layout style={layoutStyle} className="container">
-      <Image src={eSustavLogo} width={150} preview={false} />
+      <Image src={eSustavLogo} style={{padding: "5px"}} height={"100%"} preview={false} />
       <Button className="profileButton">
         <Image
           style={{ borderRadius: "15%" }}

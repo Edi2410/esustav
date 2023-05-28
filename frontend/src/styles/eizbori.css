@@ -1,0 +1,32 @@
+.topLevel{
+  display: flex;
+  height: 30px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 2% 20px 2%;
+}
+
+.profileButton{
+    height: 60%;
+    width: 10%;
+    min-width: 105px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ant-row{
+   margin-left:0 !important; 
+   margin-right:0 !important; 
+}
+
+.candidateDetails{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+}

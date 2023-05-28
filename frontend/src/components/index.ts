@@ -1,6 +1,6 @@
 import { NavBar } from "./NavBar";
 import { RoutesList } from "./RoutesList";
 
-import {Candidate} from "./eIzbori"
+import { Candidate, VotesForm } from "./eIzbori";
 
-export { NavBar, RoutesList, Candidate };
+export { NavBar, RoutesList, Candidate, VotesForm };

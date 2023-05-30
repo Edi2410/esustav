@@ -6,7 +6,7 @@ export const AxiosProvider = ({
   children,
 }: React.PropsWithChildren<unknown>) => {
   const auth = useMemo(() => {
-    const axios = Axios.create({ baseURL: "http://esustav.estudent.hr/api/" });
+    const axios = Axios.create({ baseURL: "https://esustav.estudent.hr/api/" });
     let tokenData: string | null = sessionStorage.getItem("accessToken");
 
     axios.interceptors.request.use((config) => {

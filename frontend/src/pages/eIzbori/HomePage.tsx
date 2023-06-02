@@ -11,6 +11,7 @@ export const HomePage = () => {
   const { data: candidateData } = useGetCandidate(user?.team.id);
   const { data: VotesData } = useGetVotes();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(candidateData);
   return (
     <>
       <div className="topLevel">

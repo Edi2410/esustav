@@ -42,6 +42,7 @@ export const Candidate = ({ candidate }: Props) => {
           >
             Plan Rada
           </Button>
+
           <Button
             href={candidate?.aktivnosti}
             target="_blank"
@@ -50,6 +51,19 @@ export const Candidate = ({ candidate }: Props) => {
           >
             Aktivnosti
           </Button>
+          {candidate?.predstavljanje && (
+            <>
+              <br />
+              <Button
+                href={candidate?.predstavljanje}
+                target="_blank"
+                type="primary"
+                className="candidateDetailsButton"
+              >
+                Predstavljanje
+              </Button>
+            </>
+          )}
         </div>
       </Card>
     </>

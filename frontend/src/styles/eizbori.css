@@ -30,3 +30,7 @@
     justify-content: space-around;
     height: 100%;
 }
+
+.candidateDetailsButton{
+  margin:3px;
+}

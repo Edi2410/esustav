@@ -1,4 +1,3 @@
-
 from django.http import JsonResponse
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -22,7 +21,7 @@ class CandidateView(viewsets.GenericViewSet):
         role_name_list = ["Tajnik/ca", "Predsjednik/ca", "Potpredsjednik/ca"]
 
         queryset = Candidate.objects.filter(
-            (Q(team=team) |
+            (Q(team=team) | Q(team=Team.objects.get(short_name="NO")) |
              Q(role__name__in=role_name_list)) & Q(deleted=False) 
         ).exclude(user=self.request.user)
 

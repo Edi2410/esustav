@@ -30,8 +30,11 @@ export const VotesForm = ({ candidateData, setIsModalOpen }: Props) => {
       if (
         (candidate.role.name === "Predsjednik/ca" ||
           candidate.role.name === "Potpredsjednik/ca" ||
-          candidate.role.name === "Tajnik/ca") &&
-        countGlasovaZaPREDS < 4
+          candidate.role.name === "Tajnik/ca" ||
+          candidate.team.short_name === "NO" ||
+          candidate.team.short_name === "Pravilnik" ||
+          candidate.team.short_name === "Statut") &&
+        countGlasovaZaPREDS < 5
       ) {
         countGlasovaZaPREDS++;
       }
@@ -66,7 +69,11 @@ export const VotesForm = ({ candidateData, setIsModalOpen }: Props) => {
         <br />
         {candidateData.map((candidate: CandidateType) => (
           <React.Fragment key={candidate.id}>
-            <b>{candidate.role.name + " " + candidate.team.short_name}</b>
+            <b>
+              {(candidate?.role?.name !== null ? candidate?.role?.name : "") +
+                " " +
+                candidate.team.short_name}
+            </b>
             <Form.Item
               label={candidate.user.first_name + " " + candidate.user.last_name}
               name={String(candidate.id)}

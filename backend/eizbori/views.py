@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Candidate, Votes, NumberOfVotesPerTeam
 from django.db.models import Q
 from .serializers import CandidateSerializers, IDTeamSerializer, VotesSerializers, NumberOfVotesPerTeamSerializers, AddVotesSerializers
+from estudenti.models import Teams
 
 
 class CandidateView(viewsets.GenericViewSet):
@@ -20,10 +21,11 @@ class CandidateView(viewsets.GenericViewSet):
 
         team = serializer.validated_data['team']
         role_name_list = ["Tajnik/ca", "Predsjednik/ca", "Potpredsjednik/ca"]
+        team_name_list = ["Statut", "Pravilnik", "Nadzorni Odbor"]
 
         queryset = Candidate.objects.filter(
-            (Q(team=team) |
-             Q(role__name__in=role_name_list)) & Q(deleted=False) 
+            (Q(team=team) | Q(team__name__in=team_name_list) |
+             Q(role__name__in=role_name_list)) & Q(deleted=False)
         ).exclude(user=self.request.user)
 
         serializer = CandidateSerializers(queryset, many=True)

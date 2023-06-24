@@ -21,10 +21,9 @@ class CandidateView(viewsets.GenericViewSet):
         team = serializer.validated_data['team']
         role_name_list = ["Tajnik/ca", "Predsjednik/ca", "Potpredsjednik/ca"]
         team_name_list = ["Statut", "Pravilnik", "Nadzorni Odbor"]
-
         queryset = Candidate.objects.filter(
             (Q(team=team) | Q(team__name__in=team_name_list) |
-             Q(role__name__in=role_name_list)) & Q(deleted=False)
+             Q(role__name__in=role_name_list)) | Q(teamgroup=Teams.objects.get(id=team.id).TeamGroups) & Q(deleted=False)
         ).exclude(user=self.request.user)
 
         serializer = CandidateSerializers(queryset, many=True)

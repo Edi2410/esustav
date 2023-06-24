@@ -1,5 +1,5 @@
 from django.db import models
-from estudenti.models import User, Roles, Teams
+from estudenti.models import User, Roles, Teams, TeamGroups
 # Create your models here.
 
 
@@ -7,12 +7,13 @@ class Candidate(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     role = models.ForeignKey(Roles, on_delete=models.DO_NOTHING, null=True)
     team = models.ForeignKey(Teams, on_delete=models.DO_NOTHING, null=True)
+    teamgroup = models.ForeignKey(TeamGroups, on_delete=models.DO_NOTHING, null=True)
     cv = models.TextField(blank=True, null=True)
     plan_rada = models.TextField(blank=True, null=True)
     aktivnosti = models.TextField(blank=True, null=True)
     predstavljanje = models.TextField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
-    
+
     def __str__(self) -> str:
         return f"{self.user.email} - {self.role.name} - {self.team.name}"
 

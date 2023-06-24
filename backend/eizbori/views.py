@@ -6,11 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Candidate, Votes, NumberOfVotesPerTeam
 from django.db.models import Q
 from .serializers import CandidateSerializers, IDTeamSerializer, VotesSerializers, NumberOfVotesPerTeamSerializers, AddVotesSerializers
-from estudenti.models import Teams
+from estudenti.models import Teams, UsersPositions
 
 
 class CandidateView(viewsets.GenericViewSet):
     queryset = Candidate.objects.all()
+
     serializer_class = CandidateSerializers()
     permission_classes = [IsAuthenticated]
 
@@ -21,10 +22,18 @@ class CandidateView(viewsets.GenericViewSet):
         team = serializer.validated_data['team']
         role_name_list = ["Tajnik/ca", "Predsjednik/ca", "Potpredsjednik/ca"]
         team_name_list = ["Statut", "Pravilnik", "Nadzorni Odbor"]
+        user = UsersPositions.objects.get(
+            user=self.request.user)
         queryset = Candidate.objects.filter(
-            (Q(team=team) | Q(team__name__in=team_name_list) |
-             Q(role__name__in=role_name_list)) | Q(teamgroup=Teams.objects.get(id=team.id).TeamGroups) & Q(deleted=False)
+            Q(team=team) |
+            Q(team__name__in=team_name_list) |
+            Q(role__name__in=role_name_list) |
+            Q(teamgroup=Teams.objects.get(id=team.id).TeamGroups) &
+            Q(deleted=False)
         ).exclude(user=self.request.user)
+
+        if (not (user.role.name == "Predsjednik/ca" or user.role.name == "Potpredsjednik/ca")):
+            queryset = queryset.exclude(role__name="Tajnik/ca")
 
         serializer = CandidateSerializers(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
